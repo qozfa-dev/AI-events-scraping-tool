@@ -19,5 +19,12 @@ print(response.status_code)
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, "html.parser")
     print(soup.title.text)
-else:
-    print("Blocked or failed to retrieve page.")
+
+    target_div = soup.find("div", class_='elementor-element-43cc35b6')
+
+    if target_div:
+        description = target_div.get_text(strip=True)
+        print("Event Description:")
+        print(description)
+    else:
+        print("Target div not found.")
