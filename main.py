@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-url = 'https://www.ai-expo.net/europe/'
+url = 'https://devpost.com/hackathons'
 
 
 headers = {
@@ -18,13 +18,24 @@ response = requests.get(url, headers=headers)
 print(response.status_code)
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, "html.parser")
-    print(soup.title.text)
 
-    target_div = soup.find("div", class_='elementor-element-43cc35b6')
+    # Find all hackathon blocks
+    hackathons = soup.find_all("div", class_="hackathon-tile")
 
-    if target_div:
-        description = target_div.get_text(strip=True)
-        print("Event Description:")
-        print(description)
-    else:
-        print("Target div not found.")
+    for hackathon in hackathons:
+        title = hackathon.find("h3").text.strip()
+        link = "https://devpost.com" + \
+            hackathon.find("a", class_="tile-anchor")["href"]
+        dates = hackathon.find("div", class_="submission-period").text.strip()
+        location_span = hackathon.find("i", class_="fas fa-globe")
+        location = location_span.find_next(
+            "span").text.strip() if location_span else "Unknown"
+
+        print(f"Title: {title}")
+        print(f"Dates: {dates}")
+        print(f"Location: {location}")
+        print(f"Link: {link}")
+        print("-" * 50)
+
+else:
+    print("Scraping did not work.")
