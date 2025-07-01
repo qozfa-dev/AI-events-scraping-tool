@@ -7,6 +7,13 @@ url = 'https://react-amazon-bestsellers-books-dy.netlify.app/'
 
 session = HTMLSession()
 response = session.get(url)
-soup = BeautifulSoup(response.content, 'html.parser')
+response.html.render()
 
-print(soup.find_all('article', class_='book'))
+print(response.html)
+print(response.html.html)
+
+# soup = BeautifulSoup(response.content, 'html.parser')
+
+# print(soup.find_all('article', class_='book'))
+
+# 8.30
